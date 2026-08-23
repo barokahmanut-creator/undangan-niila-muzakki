@@ -855,7 +855,7 @@
       z-index: 0;
     }
 
-    .hero-ring {
+    .hero .hero-ring {
       position: absolute;
 
       top: 50%;
@@ -875,20 +875,25 @@
       z-index: 0;
     }
 
-    .hero-ring.r2 {
+    .hero .hero-ring.r2 {
       width: 260px;
       height: 260px;
 
       border-color: rgba(212, 175, 55, 0.14);
     }
 
-    .hero > * {
+    .hero > .kicker,
+    .hero > h1,
+    .hero > .amp,
+    .hero > .divider,
+    .hero > .date-line,
+    .hero > .scroll-cue {
       position: relative;
 
       z-index: 1;
     }
 
-    .hero-branch {
+    .hero .hero-branch {
       position: absolute;
 
       width: 92px;
@@ -915,7 +920,7 @@
       transform: rotate(180deg);
     }
 
-    .hero-sparkles {
+    .hero .hero-sparkles {
       position: absolute;
 
       inset: 0;
