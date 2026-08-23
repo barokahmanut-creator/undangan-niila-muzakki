@@ -812,6 +812,8 @@
     ========================================================= */
 
     .hero {
+      position: relative;
+
       padding-top: 66px;
 
       min-height: 100vh;
@@ -823,6 +825,104 @@
       align-items: center;
 
       justify-content: center;
+
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      width: 340px;
+      height: 340px;
+
+      transform: translate(-50%, -50%);
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(212, 175, 55, 0.14) 0%,
+          rgba(212, 175, 55, 0.05) 45%,
+          transparent 72%
+        );
+
+      pointer-events: none;
+
+      z-index: 0;
+    }
+
+    .hero-ring {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 300px;
+      height: 300px;
+
+      border: 1px solid rgba(212, 175, 55, 0.22);
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 0;
+    }
+
+    .hero-ring.r2 {
+      width: 260px;
+      height: 260px;
+
+      border-color: rgba(212, 175, 55, 0.14);
+    }
+
+    .hero > * {
+      position: relative;
+
+      z-index: 1;
+    }
+
+    .hero-branch {
+      position: absolute;
+
+      width: 92px;
+      height: 92px;
+
+      color: var(--gold);
+
+      opacity: 0.55;
+
+      z-index: 0;
+
+      pointer-events: none;
+    }
+
+    .hero-branch.hb-tl {
+      top: 78px;
+      left: 14px;
+    }
+
+    .hero-branch.hb-br {
+      bottom: 90px;
+      right: 14px;
+
+      transform: rotate(180deg);
+    }
+
+    .hero-sparkles {
+      position: absolute;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      z-index: 0;
     }
 
     .hero .kicker {
@@ -935,22 +1035,79 @@
        QUOTE
     ========================================================= */
 
-    .quote-wrap {
+    .quote-section {
+      padding: 56px 22px !important;
+    }
+
+    .quote-outer {
       position: relative;
 
       max-width: 360px;
 
       margin: 0 auto;
 
-      padding: 44px 26px 34px 26px;
+      padding: 14px;
 
-      border-top:
-        1px solid
-        var(--line);
+      border-radius: 4px;
 
-      border-bottom:
-        1px solid
-        var(--line);
+      background:
+        radial-gradient(
+          circle at 12% 8%,
+          rgba(212, 175, 55, 0.16),
+          transparent 42%
+        ),
+        radial-gradient(
+          circle at 90% 95%,
+          rgba(212, 175, 55, 0.14),
+          transparent 45%
+        ),
+        linear-gradient(
+          160deg,
+          #0C3628 0%,
+          #0A2A20 55%,
+          #081F18 100%
+        );
+
+      box-shadow:
+        0 20px 46px
+        rgba(0, 0, 0, 0.35);
+    }
+
+    .quote-outer::before {
+      content: '';
+
+      position: absolute;
+
+      inset: 0;
+
+      background-image:
+        linear-gradient(
+          105deg,
+          transparent 38%,
+          rgba(212, 175, 55, 0.16) 44%,
+          rgba(212, 175, 55, 0.05) 48%,
+          transparent 55%
+        ),
+        linear-gradient(
+          25deg,
+          transparent 60%,
+          rgba(212, 175, 55, 0.10) 68%,
+          transparent 76%
+        );
+
+      pointer-events: none;
+    }
+
+    .quote-wrap {
+      position: relative;
+
+      padding: 42px 24px 30px 24px;
+
+      border: 1.5px solid var(--gold);
+
+      box-shadow:
+        inset 0 0 0 3px rgba(8, 31, 24, 0.9),
+        inset 0 0 0 4px rgba(212, 175, 55, 0.5);
     }
 
     .quote-mark {
@@ -964,7 +1121,7 @@
 
       color: var(--gold);
 
-      opacity: 0.55;
+      opacity: 0.6;
 
       margin-bottom: 4px;
     }
@@ -976,13 +1133,13 @@
 
       font-style: italic;
 
-      font-size: 19px;
+      font-size: 18px;
 
       line-height: 1.85;
 
-      color: var(--ink-soft);
+      color: var(--ink);
 
-      max-width: 340px;
+      max-width: 300px;
 
       margin: 0 auto;
     }
@@ -1016,21 +1173,25 @@
       top: -1px;
     }
 
-    .quote-deco-top,
-    .quote-deco-bottom {
-      width: 40px;
+    .floral-corner {
+      position: absolute;
 
-      height: 40px;
+      width: 108px;
+      height: 108px;
 
-      margin: 0 auto 8px auto;
+      pointer-events: none;
 
-      color: var(--gold);
-
-      opacity: 0.6;
+      z-index: 3;
     }
 
-    .quote-deco-bottom {
-      margin: 18px auto 0 auto;
+    .floral-corner.fc-tl {
+      top: -16px;
+      left: -16px;
+    }
+
+    .floral-corner.fc-br {
+      bottom: -16px;
+      right: -16px;
 
       transform: rotate(180deg);
     }
@@ -2400,6 +2561,29 @@
       class="hero"
       id="hero">
 
+      <div class="hero-ring"></div>
+      <div class="hero-ring r2"></div>
+
+      <div class="hero-sparkles" id="heroSparkles"></div>
+
+      <svg class="hero-branch hb-tl" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6 C 20 18, 26 34, 24 52" stroke="currentColor" stroke-width="1" fill="none" opacity="0.7" />
+        <path d="M24 52 C 34 46, 44 50, 48 60" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6" />
+        <path d="M12 20 C 20 16, 26 22, 22 30 C 14 30, 8 26, 12 20 Z" fill="currentColor" opacity="0.7" />
+        <path d="M18 36 C 26 32, 32 38, 28 46 C 20 46, 14 42, 18 36 Z" fill="currentColor" opacity="0.55" />
+        <path d="M30 54 C 38 50, 44 56, 40 64 C 32 64, 26 60, 30 54 Z" fill="currentColor" opacity="0.45" />
+        <circle cx="8" cy="8" r="2" fill="currentColor" opacity="0.8" />
+      </svg>
+
+      <svg class="hero-branch hb-br" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6 C 20 18, 26 34, 24 52" stroke="currentColor" stroke-width="1" fill="none" opacity="0.7" />
+        <path d="M24 52 C 34 46, 44 50, 48 60" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6" />
+        <path d="M12 20 C 20 16, 26 22, 22 30 C 14 30, 8 26, 12 20 Z" fill="currentColor" opacity="0.7" />
+        <path d="M18 36 C 26 32, 32 38, 28 46 C 20 46, 14 42, 18 36 Z" fill="currentColor" opacity="0.55" />
+        <path d="M30 54 C 38 50, 44 56, 40 64 C 32 64, 26 60, 30 54 Z" fill="currentColor" opacity="0.45" />
+        <circle cx="8" cy="8" r="2" fill="currentColor" opacity="0.8" />
+      </svg>
+
       <div class="kicker reveal">
         Undangan Pernikahan
       </div>
@@ -2453,41 +2637,109 @@
          QUOTE
     ======================================================== -->
 
-    <section>
+    <section class="quote-section">
 
-      <svg class="quote-deco-top reveal" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
-        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
-        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
-      </svg>
+      <div class="quote-outer reveal">
 
-      <div class="quote-wrap reveal d1">
+        <div class="quote-wrap">
 
-        <span class="quote-mark gold-gradient">
-          &ldquo;
-        </span>
+          <!-- Floral corner: top-left -->
+          <svg class="floral-corner fc-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
 
-        <p class="quote-block">
+            <g opacity="0.95">
 
-          Dan di antara tanda-tanda kekuasaan-Nya ialah diciptakan-Nya
-          untukmu pasangan hidup agar hatimu tenteram bersamanya,
-          serta ditumbuhkan-Nya rasa kasih dan sayang di antara kalian.
-          Sesungguhnya ini menjadi bukti nyata kekuasaan Allah bagi
-          orang yang mau merenungkannya.
+              <path d="M4 4 C 30 8, 45 25, 46 55 C 46 25, 65 10, 100 4"
+                stroke="var(--gold)" stroke-width="1" fill="none" opacity="0.55" />
 
-        </p>
+              <path d="M10 34 C 24 30, 30 42, 22 54 C 34 48, 44 56, 40 70 C 52 60, 62 68, 58 82"
+                stroke="var(--gold-deep)" stroke-width="1" fill="none" opacity="0.4" />
 
-        <div class="quote-src">
+              <!-- leaves -->
+              <path d="M14 46 C 24 40, 34 46, 32 58 C 22 58, 12 54, 14 46 Z" fill="#0F6B4C" opacity="0.9" />
+              <path d="M30 64 C 40 58, 50 64, 48 76 C 38 76, 28 72, 30 64 Z" fill="#12805A" opacity="0.9" />
+              <path d="M6 20 C 16 14, 26 20, 24 32 C 14 32, 4 28, 6 20 Z" fill="#0B5A3F" opacity="0.85" />
 
-          Q.S. Ar-Rum : 21
+              <!-- rose 1 -->
+              <g transform="translate(26,26)">
+                <circle r="12" fill="#155C41" />
+                <circle r="8.4" fill="#1C7A55" />
+                <circle r="5.2" fill="#249368" />
+                <circle r="2.2" fill="#D9C48B" />
+              </g>
+
+              <!-- rose 2 (gold accent) -->
+              <g transform="translate(58,14)">
+                <circle r="7.5" fill="#B98F2E" opacity="0.9" />
+                <circle r="4.6" fill="#E8C874" opacity="0.9" />
+                <circle r="1.8" fill="#F9F1D8" />
+              </g>
+
+              <!-- small buds -->
+              <circle cx="70" cy="34" r="3.4" fill="#1C7A55" opacity="0.85" />
+              <circle cx="12" cy="66" r="2.6" fill="#E8C874" opacity="0.8" />
+
+            </g>
+
+          </svg>
+
+          <!-- Floral corner: bottom-right -->
+          <svg class="floral-corner fc-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+
+            <g opacity="0.95">
+
+              <path d="M4 4 C 30 8, 45 25, 46 55 C 46 25, 65 10, 100 4"
+                stroke="var(--gold)" stroke-width="1" fill="none" opacity="0.55" />
+
+              <path d="M10 34 C 24 30, 30 42, 22 54 C 34 48, 44 56, 40 70 C 52 60, 62 68, 58 82"
+                stroke="var(--gold-deep)" stroke-width="1" fill="none" opacity="0.4" />
+
+              <path d="M14 46 C 24 40, 34 46, 32 58 C 22 58, 12 54, 14 46 Z" fill="#0F6B4C" opacity="0.9" />
+              <path d="M30 64 C 40 58, 50 64, 48 76 C 38 76, 28 72, 30 64 Z" fill="#12805A" opacity="0.9" />
+              <path d="M6 20 C 16 14, 26 20, 24 32 C 14 32, 4 28, 6 20 Z" fill="#0B5A3F" opacity="0.85" />
+
+              <g transform="translate(26,26)">
+                <circle r="12" fill="#155C41" />
+                <circle r="8.4" fill="#1C7A55" />
+                <circle r="5.2" fill="#249368" />
+                <circle r="2.2" fill="#D9C48B" />
+              </g>
+
+              <g transform="translate(58,14)">
+                <circle r="7.5" fill="#B98F2E" opacity="0.9" />
+                <circle r="4.6" fill="#E8C874" opacity="0.9" />
+                <circle r="1.8" fill="#F9F1D8" />
+              </g>
+
+              <circle cx="70" cy="34" r="3.4" fill="#1C7A55" opacity="0.85" />
+              <circle cx="12" cy="66" r="2.6" fill="#E8C874" opacity="0.8" />
+
+            </g>
+
+          </svg>
+
+          <span class="quote-mark gold-gradient">
+            &ldquo;
+          </span>
+
+          <p class="quote-block">
+
+            Dan di antara tanda-tanda kekuasaan-Nya ialah diciptakan-Nya
+            untukmu pasangan hidup agar hatimu tenteram bersamanya,
+            serta ditumbuhkan-Nya rasa kasih dan sayang di antara kalian.
+            Sesungguhnya ini menjadi bukti nyata kekuasaan Allah bagi
+            orang yang mau merenungkannya.
+
+          </p>
+
+          <div class="quote-src">
+
+            Q.S. Ar-Rum : 21
+
+          </div>
 
         </div>
 
       </div>
-
-      <svg class="quote-deco-bottom reveal d2" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
-        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
-        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
-      </svg>
 
     </section>
 
@@ -3608,6 +3860,40 @@
 
         s.style.animationDelay =
           (Math.random() * 4) + 's';
+
+        container.appendChild(s);
+
+      }
+
+    })();
+
+
+    /* =========================================================
+       HERO SPARKLES
+    ========================================================= */
+
+    (function generateHeroSparkles() {
+
+      const container =
+        document.getElementById('heroSparkles');
+
+      if (!container) return;
+
+      for (let i = 0; i < 16; i++) {
+
+        const s =
+          document.createElement('div');
+
+        s.className = 'sparkle';
+
+        s.style.left = (15 + Math.random() * 70) + '%';
+        s.style.top = (10 + Math.random() * 80) + '%';
+
+        s.style.animationDuration =
+          (2.4 + Math.random() * 2.6) + 's';
+
+        s.style.animationDelay =
+          (Math.random() * 5) + 's';
 
         container.appendChild(s);
 
