@@ -4195,17 +4195,17 @@
 
 
     /*
-     * Easing lembut (ease-in-out quad):
-     * mulai pelan, di tengah agak cepat,
-     * lalu melambat lagi menjelang berhenti —
-     * terasa halus, tidak tersentak.
+     * Easing sangat lembut (ease-in-out cubic):
+     * awal & akhir gerakan melambat jauh
+     * lebih halus dibanding kurva quad,
+     * sehingga tidak terasa "ditarik".
      */
 
     function easeInOutSine(t) {
 
       return t < 0.5
-        ? 2 * t * t
-        : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     }
 
@@ -4219,6 +4219,21 @@
         tourScrollRAF = null;
 
       }
+
+      /*
+       * Matikan sementara CSS
+       * scroll-behavior:smooth bawaan
+       * agar tidak bentrok dengan
+       * animasi kustom kita.
+       */
+
+      const rootEl =
+        document.documentElement;
+
+      const prevScrollBehavior =
+        rootEl.style.scrollBehavior;
+
+      rootEl.style.scrollBehavior = 'auto';
 
       const startY =
         window.scrollY;
@@ -4260,6 +4275,9 @@
         } else {
 
           tourScrollRAF = null;
+
+          rootEl.style.scrollBehavior =
+            prevScrollBehavior;
 
         }
 
