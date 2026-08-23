@@ -117,11 +117,17 @@
     .gold-gradient {
       background:
         linear-gradient(
-          135deg,
-          #F9F1D8 0%,
-          #D4AF37 50%,
+          100deg,
+          #9C7A3C 0%,
+          #F9F1D8 22%,
+          #D4AF37 40%,
+          #FCEFC4 52%,
+          #D4AF37 64%,
+          #F9F1D8 82%,
           #9C7A3C 100%
         );
+
+      background-size: 260% 100%;
 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -129,6 +135,19 @@
       background-clip: text;
 
       display: inline-block;
+
+      animation: shimmerGold 5.5s linear infinite;
+    }
+
+    @keyframes shimmerGold {
+
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: -260% 50%;
+      }
     }
 
 
@@ -199,6 +218,168 @@
           rotate(220deg);
 
         opacity: 0;
+      }
+    }
+
+
+    /* =========================================================
+       SPARKLES
+    ========================================================= */
+
+    .sparkle {
+      position: absolute;
+
+      width: 3px;
+      height: 3px;
+
+      border-radius: 50%;
+
+      background: var(--gold-deep);
+
+      box-shadow:
+        0 0 6px 1px
+        rgba(232, 200, 116, 0.9);
+
+      animation: twinkle ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0;
+
+        transform: scale(0.4);
+      }
+
+      50% {
+        opacity: 1;
+
+        transform: scale(1.15);
+      }
+    }
+
+
+    /* =========================================================
+       ORNAMENT FLOURISH
+    ========================================================= */
+
+    .ornament {
+      width: 34px;
+
+      height: 34px;
+
+      margin: 0 auto 14px auto;
+
+      color: var(--gold);
+
+      opacity: 0.85;
+    }
+
+    .ornament-sm {
+      width: 24px;
+
+      height: 24px;
+
+      margin: 0 auto 10px auto;
+
+      color: var(--gold);
+
+      opacity: 0.8;
+    }
+
+    .corner-flourish {
+      position: absolute;
+
+      width: 46px;
+      height: 46px;
+
+      color: var(--gold);
+
+      opacity: 0.55;
+
+      z-index: 2;
+    }
+
+    .corner-flourish.tl {
+      top: 26px;
+      left: 26px;
+    }
+
+    .corner-flourish.tr {
+      top: 26px;
+      right: 26px;
+
+      transform: scaleX(-1);
+    }
+
+    .corner-flourish.bl {
+      bottom: 26px;
+      left: 26px;
+
+      transform: scaleY(-1);
+    }
+
+    .corner-flourish.br {
+      bottom: 26px;
+      right: 26px;
+
+      transform: scale(-1, -1);
+    }
+
+
+    /* =========================================================
+       SHINE SWEEP ON CARDS
+    ========================================================= */
+
+    .shine-sweep {
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .shine-sweep::before {
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: -60%;
+
+      width: 40%;
+
+      height: 100%;
+
+      background:
+        linear-gradient(
+          115deg,
+          transparent 0%,
+          rgba(212, 175, 55, 0.16) 45%,
+          rgba(255, 245, 214, 0.28) 50%,
+          rgba(212, 175, 55, 0.16) 55%,
+          transparent 100%
+        );
+
+      transform: skewX(-18deg);
+
+      animation: sweep 6.5s ease-in-out infinite;
+
+      pointer-events: none;
+    }
+
+    @keyframes sweep {
+
+      0% {
+        left: -60%;
+      }
+
+      35% {
+        left: 130%;
+      }
+
+      100% {
+        left: 130%;
       }
     }
 
@@ -754,6 +935,40 @@
        QUOTE
     ========================================================= */
 
+    .quote-wrap {
+      position: relative;
+
+      max-width: 360px;
+
+      margin: 0 auto;
+
+      padding: 44px 26px 34px 26px;
+
+      border-top:
+        1px solid
+        var(--line);
+
+      border-bottom:
+        1px solid
+        var(--line);
+    }
+
+    .quote-mark {
+      display: block;
+
+      font-family: 'Playfair Display', serif;
+
+      font-size: 56px;
+
+      line-height: 1;
+
+      color: var(--gold);
+
+      opacity: 0.55;
+
+      margin-bottom: 4px;
+    }
+
     .quote-block {
       font-family:
         'Cormorant Garamond',
@@ -782,6 +997,42 @@
       color: var(--gold-deep);
 
       font-family: 'Jost';
+    }
+
+    .quote-src::before,
+    .quote-src::after {
+      content: '✦';
+
+      color: var(--gold);
+
+      font-size: 9px;
+
+      margin: 0 10px;
+
+      opacity: 0.8;
+
+      position: relative;
+
+      top: -1px;
+    }
+
+    .quote-deco-top,
+    .quote-deco-bottom {
+      width: 40px;
+
+      height: 40px;
+
+      margin: 0 auto 8px auto;
+
+      color: var(--gold);
+
+      opacity: 0.6;
+    }
+
+    .quote-deco-bottom {
+      margin: 18px auto 0 auto;
+
+      transform: rotate(180deg);
     }
 
 
@@ -1245,6 +1496,40 @@
       box-shadow:
         0 10px 26px
         rgba(156, 122, 60, 0.12);
+
+      animation: cdGlow 3.2s ease-in-out infinite;
+    }
+
+    .cd-box:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .cd-box:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .cd-box:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes cdGlow {
+
+      0%,
+      100% {
+        box-shadow:
+          0 10px 26px
+          rgba(156, 122, 60, 0.12);
+
+        border-color: var(--line);
+      }
+
+      50% {
+        box-shadow:
+          0 10px 30px
+          rgba(212, 175, 55, 0.28);
+
+        border-color: rgba(212, 175, 55, 0.55);
+      }
     }
 
     .cd-num {
@@ -1610,6 +1895,10 @@
       box-shadow:
         0 16px 34px
         rgba(212, 175, 55, 0.4);
+    }
+
+    .rsvp-btn {
+      animation: pulseBtn 2.4s ease-in-out infinite;
     }
 
     .rsvp-num {
@@ -2023,6 +2312,32 @@
 
       <div class="cover-frame"></div>
 
+      <svg class="corner-flourish tl" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M4 4 C 4 24, 24 4, 44 4" />
+        <path d="M4 4 C 24 4, 4 24, 4 44" />
+        <circle cx="4" cy="4" r="2.4" fill="currentColor" stroke="none" />
+      </svg>
+
+      <svg class="corner-flourish tr" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M4 4 C 4 24, 24 4, 44 4" />
+        <path d="M4 4 C 24 4, 4 24, 4 44" />
+        <circle cx="4" cy="4" r="2.4" fill="currentColor" stroke="none" />
+      </svg>
+
+      <svg class="corner-flourish bl" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M4 4 C 4 24, 24 4, 44 4" />
+        <path d="M4 4 C 24 4, 4 24, 4 44" />
+        <circle cx="4" cy="4" r="2.4" fill="currentColor" stroke="none" />
+      </svg>
+
+      <svg class="corner-flourish br" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M4 4 C 4 24, 24 4, 44 4" />
+        <path d="M4 4 C 24 4, 4 24, 4 44" />
+        <circle cx="4" cy="4" r="2.4" fill="currentColor" stroke="none" />
+      </svg>
+
+      <div id="coverSparkles" style="position:absolute; inset:0; pointer-events:none; z-index:1;"></div>
+
       <div class="cover-eyebrow">
         Together with their families
       </div>
@@ -2101,6 +2416,11 @@
         Muzakki
       </h1>
 
+      <svg class="ornament reveal d2" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
+        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
+      </svg>
+
       <div class="divider reveal d2">
 
         <span class="line"></span>
@@ -2135,21 +2455,39 @@
 
     <section>
 
-      <p class="quote-block reveal">
+      <svg class="quote-deco-top reveal" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
+        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
+      </svg>
 
-        "Dan di antara tanda-tanda kekuasaan-Nya ialah diciptakan-Nya
-        untukmu pasangan hidup agar hatimu tenteram bersamanya,
-        serta ditumbuhkan-Nya rasa kasih dan sayang di antara kalian.
-        Sesungguhnya ini menjadi bukti nyata kekuasaan Allah bagi
-        orang yang mau merenungkannya."
+      <div class="quote-wrap reveal d1">
 
-      </p>
+        <span class="quote-mark gold-gradient">
+          &ldquo;
+        </span>
 
-      <div class="quote-src reveal d1">
+        <p class="quote-block">
 
-        Q.S. Ar-Rum : 21
+          Dan di antara tanda-tanda kekuasaan-Nya ialah diciptakan-Nya
+          untukmu pasangan hidup agar hatimu tenteram bersamanya,
+          serta ditumbuhkan-Nya rasa kasih dan sayang di antara kalian.
+          Sesungguhnya ini menjadi bukti nyata kekuasaan Allah bagi
+          orang yang mau merenungkannya.
+
+        </p>
+
+        <div class="quote-src">
+
+          Q.S. Ar-Rum : 21
+
+        </div>
 
       </div>
+
+      <svg class="quote-deco-bottom reveal d2" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
+        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
+      </svg>
 
     </section>
 
@@ -2159,6 +2497,10 @@
     ======================================================== -->
 
     <section id="couple">
+
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
 
       <div class="couple-title reveal">
         Mempelai
@@ -2175,7 +2517,7 @@
 
       <!-- NIILA -->
 
-      <div class="person-card reveal">
+      <div class="person-card shine-sweep reveal">
 
         <div class="person-frame">
           <span>N</span>
@@ -2220,9 +2562,9 @@
 
         <span class="line"></span>
 
-        <span class="amp-mid">
-          &amp;
-        </span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.3" style="flex-shrink:0;">
+          <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+        </svg>
 
         <span class="line"></span>
 
@@ -2231,7 +2573,7 @@
 
       <!-- MUZAKKI -->
 
-      <div class="person-card reveal">
+      <div class="person-card shine-sweep reveal">
 
         <div class="person-frame">
           <span>M</span>
@@ -2279,6 +2621,10 @@
     ======================================================== -->
 
     <section id="story">
+
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
 
       <div class="couple-title reveal">
         Perjalanan Kami
@@ -2385,6 +2731,10 @@
 
     <section id="event">
 
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
+
       <div class="event-title reveal">
         Waktu &amp; Tempat
       </div>
@@ -2394,7 +2744,7 @@
       </div>
 
 
-      <div class="event-card reveal d1">
+      <div class="event-card shine-sweep reveal d1">
 
         <div class="event-label">
           Akad &amp; Resepsi
@@ -2554,6 +2904,10 @@
 
     <section id="gift">
 
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
+
       <div class="gift-title reveal">
         Tanda Kasih
       </div>
@@ -2569,7 +2923,7 @@
 
       <!-- REKENING -->
 
-      <div class="pay-card reveal d1">
+      <div class="pay-card shine-sweep reveal d1">
 
         <div class="pay-card-top">
 
@@ -2629,7 +2983,7 @@
 
       <!-- KADO -->
 
-      <div class="pay-card reveal d2">
+      <div class="pay-card shine-sweep reveal d2">
 
         <div class="pay-card-top">
 
@@ -2726,6 +3080,10 @@
 
     <section id="rsvp">
 
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
+
       <div class="rsvp-title reveal">
         Konfirmasi Kehadiran
       </div>
@@ -2767,6 +3125,10 @@
 
     <section id="ucapan">
 
+      <svg class="ornament-sm reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z" />
+      </svg>
+
       <div class="wishes-title reveal">
         Ucapan &amp; Doa
       </div>
@@ -2779,7 +3141,7 @@
       </p>
 
 
-      <div class="wish-form reveal d1">
+      <div class="wish-form shine-sweep reveal d1">
 
         <label for="wishName">
           Nama
@@ -2851,6 +3213,11 @@
     ======================================================== -->
 
     <section class="closing">
+
+      <svg class="ornament reveal" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M2 12 C 14 2, 20 20, 30 12 C 40 4, 46 22, 58 12" />
+        <circle cx="30" cy="12" r="2.2" fill="currentColor" stroke="none" />
+      </svg>
 
       <div class="divider reveal">
 
@@ -3213,6 +3580,40 @@
       io.observe(el);
 
     });
+
+
+    /* =========================================================
+       COVER SPARKLES
+    ========================================================= */
+
+    (function generateCoverSparkles() {
+
+      const container =
+        document.getElementById('coverSparkles');
+
+      if (!container) return;
+
+      for (let i = 0; i < 22; i++) {
+
+        const s =
+          document.createElement('div');
+
+        s.className = 'sparkle';
+
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+
+        s.style.animationDuration =
+          (2 + Math.random() * 2.5) + 's';
+
+        s.style.animationDelay =
+          (Math.random() * 4) + 's';
+
+        container.appendChild(s);
+
+      }
+
+    })();
 
 
     /* =========================================================
