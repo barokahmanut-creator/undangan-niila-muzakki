@@ -484,6 +484,61 @@
 
 
     /* =========================================================
+       TOUR BUTTON
+    ========================================================= */
+
+    .tour-btn {
+      position: fixed;
+
+      bottom: 22px;
+      left: 18px;
+
+      z-index: 41;
+
+      width: 46px;
+      height: 46px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: var(--ivory);
+
+      border: 1px solid var(--gold);
+
+      color: var(--gold-deep);
+
+      font-size: 16px;
+
+      border-radius: 50%;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 6px 18px
+        rgba(156, 122, 60, 0.25);
+
+      transition: opacity 0.5s ease, transform 0.4s ease;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transform: translateY(8px);
+    }
+
+    .tour-btn.visible {
+      opacity: 1;
+
+      pointer-events: auto;
+
+      transform: translateY(0);
+    }
+
+
+    /* =========================================================
        REVEAL ANIMATION
     ========================================================= */
 
@@ -2462,6 +2517,16 @@
 
   </button>
 
+  <button
+    class="tour-btn"
+    id="tourBtn"
+    onclick="toggleTour()"
+    aria-label="Mulai atau hentikan penjelajahan otomatis">
+
+    <span id="tourBtnIcon">▶</span>
+
+  </button>
+
 
   <!-- =========================================================
        MAIN STAGE
@@ -3552,6 +3617,16 @@
         .getElementById('musicBtn')
         .classList.add('playing');
 
+      /*
+       * Mulai tur otomatis sesaat setelah
+       * animasi penutupan cover selesai.
+       */
+
+      setTimeout(
+        startTour,
+        1100
+      );
+
     }
 
 
@@ -4039,6 +4114,14 @@
 
           event.preventDefault();
 
+          /*
+           * Klik navigasi titik dianggap
+           * sebagai aksi manual pengguna,
+           * jadi hentikan tur otomatis.
+           */
+
+          stopTour();
+
           const target =
             document.getElementById(
               dot.dataset.target
@@ -4062,11 +4145,360 @@
 
 
     /* =========================================================
+       TUR OTOMATIS (AUTO TOUR)
+
+       Menggulir halaman melewati setiap
+       seksi secara berurutan setelah
+       undangan dibuka, dan otomatis
+       berhenti begitu pengguna melakukan
+       aksi scroll/gesture sendiri
+       (wheel, sentuhan, atau tombol
+       keyboard navigasi).
+    ========================================================= */
+
+    let tourActive = false;
+
+    let tourStepTimeout = null;
+
+    let tourIndex = 0;
+
+    let tourScrollRAF = null;
+
+    /* Jeda tinggal di tiap seksi sebelum lanjut */
+
+    const TOUR_DWELL_MS = 6500;
+
+    /* Lama waktu animasi gulir antar seksi */
+
+    const TOUR_SCROLL_MS = 2000;
+
+    const tourBtn =
+      document.getElementById('tourBtn');
+
+    const tourBtnIcon =
+      document.getElementById('tourBtnIcon');
+
+
+    function setTourButtonState() {
+
+      if (!tourBtn) return;
+
+      tourBtn.classList.toggle(
+        'visible',
+        true
+      );
+
+      tourBtnIcon.textContent =
+        tourActive ? '⏸' : '▶';
+
+    }
+
+
+    /*
+     * Easing lembut (ease-in-out quad):
+     * mulai pelan, di tengah agak cepat,
+     * lalu melambat lagi menjelang berhenti —
+     * terasa halus, tidak tersentak.
+     */
+
+    function easeInOutSine(t) {
+
+      return t < 0.5
+        ? 2 * t * t
+        : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+    }
+
+
+    function gentleScrollTo(targetY, duration) {
+
+      if (tourScrollRAF) {
+
+        cancelAnimationFrame(tourScrollRAF);
+
+        tourScrollRAF = null;
+
+      }
+
+      const startY =
+        window.scrollY;
+
+      const distance =
+        targetY - startY;
+
+      const startTime =
+        performance.now();
+
+      function step(now) {
+
+        const elapsed =
+          now - startTime;
+
+        const progress =
+          Math.min(
+            elapsed / duration,
+            1
+          );
+
+        const eased =
+          easeInOutSine(progress);
+
+        window.scrollTo({
+          top: startY + distance * eased,
+          left: 0,
+          behavior: 'auto'
+        });
+
+        if (
+          progress < 1 &&
+          tourActive
+        ) {
+
+          tourScrollRAF =
+            requestAnimationFrame(step);
+
+        } else {
+
+          tourScrollRAF = null;
+
+        }
+
+      }
+
+      tourScrollRAF =
+        requestAnimationFrame(step);
+
+    }
+
+
+    function goToTourStep(index) {
+
+      const section =
+        sections[index];
+
+      if (!section) return;
+
+      const targetY =
+        section.getBoundingClientRect().top +
+        window.scrollY;
+
+      gentleScrollTo(
+        targetY,
+        TOUR_SCROLL_MS
+      );
+
+    }
+
+
+    function scheduleNextTourStep() {
+
+      clearTimeout(tourStepTimeout);
+
+      tourStepTimeout =
+        setTimeout(() => {
+
+          if (!tourActive) return;
+
+          tourIndex++;
+
+          if (tourIndex >= sections.length) {
+
+            /* Tur selesai */
+
+            stopTour();
+
+            return;
+
+          }
+
+          goToTourStep(tourIndex);
+
+          scheduleNextTourStep();
+
+        }, TOUR_DWELL_MS);
+
+    }
+
+
+    function startTour() {
+
+      if (tourActive) return;
+
+      tourActive = true;
+
+      tourIndex = 0;
+
+      setTourButtonState();
+
+      goToTourStep(tourIndex);
+
+      scheduleNextTourStep();
+
+    }
+
+
+    function stopTour() {
+
+      if (tourScrollRAF) {
+
+        cancelAnimationFrame(tourScrollRAF);
+
+        tourScrollRAF = null;
+
+      }
+
+      if (!tourActive) {
+
+        setTourButtonState();
+
+        return;
+
+      }
+
+      tourActive = false;
+
+      clearTimeout(tourStepTimeout);
+
+      tourStepTimeout = null;
+
+      setTourButtonState();
+
+    }
+
+
+    function toggleTour() {
+
+      if (tourActive) {
+
+        stopTour();
+
+      } else {
+
+        /*
+         * Mulai kembali dari seksi
+         * yang sedang terlihat sekarang.
+         */
+
+        let nearest = 0;
+
+        sections.forEach(
+          (section, index) => {
+
+            if (
+              section &&
+              section.getBoundingClientRect()
+                .top <=
+                window.innerHeight * 0.5
+            ) {
+
+              nearest = index;
+
+            }
+
+          }
+        );
+
+        tourActive = true;
+
+        tourIndex = nearest;
+
+        setTourButtonState();
+
+        scheduleNextTourStep();
+
+      }
+
+    }
+
+
+    /*
+     * Deteksi interaksi manual pengguna.
+     *
+     * Hanya event yang murni berasal dari
+     * gestur pengguna (roda mouse, sentuhan
+     * layar, tombol navigasi keyboard) yang
+     * dipakai sebagai pemicu berhenti —
+     * bukan event 'scroll' itu sendiri,
+     * karena scrollIntoView() otomatis
+     * juga memicu 'scroll'.
+     */
+
+    const manualScrollKeys = [
+      'ArrowUp',
+      'ArrowDown',
+      'PageUp',
+      'PageDown',
+      'Home',
+      'End',
+      ' '
+    ];
+
+
+    function handleManualInteraction() {
+
+      if (tourActive) {
+
+        stopTour();
+
+      }
+
+    }
+
+
+    window.addEventListener(
+      'wheel',
+      handleManualInteraction,
+      {
+        passive: true
+      }
+    );
+
+
+    window.addEventListener(
+      'touchstart',
+      handleManualInteraction,
+      {
+        passive: true
+      }
+    );
+
+
+    window.addEventListener(
+      'keydown',
+      event => {
+
+        if (
+          manualScrollKeys.includes(
+            event.key
+          )
+        ) {
+
+          handleManualInteraction();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Tombol tur & dotnav sendiri tidak
+     * boleh memicu stopTour lewat listener
+     * di atas karena bukan wheel/touch/key
+     * navigasi — aman digunakan untuk
+     * memulai/menghentikan tur secara
+     * eksplisit.
+     */
+
+    setTourButtonState();
+
+
+    /* =========================================================
        PERSONALIZED GUEST NAME
-       
+
        Contoh:
        index.html?to=Bapak+Addin
-       
+
        atau:
        index.html?nama=Bapak+Addin
     ========================================================= */
@@ -4109,7 +4541,7 @@
 
     /* =========================================================
        GOOGLE SHEETS API
-       
+
        URL WEB APP APPS SCRIPT ANDA
     ========================================================= */
 
